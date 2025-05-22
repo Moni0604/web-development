@@ -1,0 +1,78 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    animation: gradient 15s ease infinite;
+    background: linear-gradient(-45deg, #ffe7e7, #f9d3d3, #CAA6A6, #FFE7E7);
+    background-size: 400% 400%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 320px;
+  }
+  
+  h1 {
+    color: #944E63;
+    margin-bottom: 20px;
+  }
+  
+  #display {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #944E63;
+    text-shadow: 0 0 10px #B47B84, 0 0 20px #CAA6A6;
+  }
+  
+  .buttons button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #B47B84;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s;
+  }
+  
+  .buttons button:hover {
+    background-color: #944E63;
+  }
+  
+  #laps {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  #laps li {
+    background-color: #f0f0f0;
+    margin: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    color: #555;
+  }
+  
+  #reminder {
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #666;
+    font-style: italic;
+  }
+  

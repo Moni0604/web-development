@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic Tac Toe - AI & 2 Player</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #fceabb, #f8b500); /* Updated background */
+      padding: 30px;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      font-size: 3em;
+      color: #444;
+    }
+    #modeSelect {
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 2.5em;
+      background-color: #fff;
+      border: 2px solid #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.2s;
+    }
+    .cell:hover {
+      background-color: #f0f0f0;
+    }
+    #message {
+      font-size: 1.5em;
+      color: #333;
+      margin-top: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tic Tac Toe</h1>
+  <select id="modeSelect">
+    <option value="ai">Play vs AI</option>
+    <option value="2p">2 Player</option>
+  </select>
+
+  <div id="board"></div>
+  <div id="message"></div>
+  <button onclick="resetGame()">Reset Game</button>
+
+  <script>
+    const board = document.getElementById("board");
+    const message = document.getElementById("message");
+    const modeSelect = document.getElementById("modeSelect");
+    let cells = Array(9).fill(null);
+    let currentPlayer = "X";
+    let gameOver = false;
+
+    function createBoard() {
+      board.innerHTML = "";
+      cells.forEach((value, index) => {
+        const div = document.createElement("div");
+        div.className = "cell";
+        div.textContent = value;
+        div.addEventListener("click", () => handleClick(index));
+        board.appendChild(div);
+      });
+    }
+
+    function handleClick(index) {
+      if (cells[index] || gameOver) return;
+
+      cells[index] = currentPlayer;
+      createBoard();
+
+      if (checkWinner(currentPlayer)) {
+        message.textContent = `${currentPlayer} wins!`;
+        gameOver = true;
+        return;
+      }
+
+      if (cells.every(c => c !== null)) {
+        message.textContent = "It's a draw!";
+        gameOver = true;
+        return;
+      }
+
+      if (modeSelect.value === "ai" && currentPlayer === "X") {
+        currentPlayer = "O";
+        setTimeout(aiMove, 300);
+      } else {
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+        message.textContent = `${currentPlayer}'s turn`;
+      }
+    }
+
+    function aiMove() {
+      if (gameOver) return;
+
+      const emptyIndices = cells.map((v, i) => v === null ? i : null).filter(i => i !== null);
+      const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+      cells[randomIndex] = "O";
+      createBoard();
+
+      if (checkWinner("O")) {
+        message.textContent = "AI wins!";
+        gameOver = true;
+        return;
+      }
+
+      if (cells.every(c => c !== null)) {
+        message.textContent = "It's a draw!";
+        gameOver = true;
+        return;
+      }
+
+      currentPlayer = "X";
+      message.textContent = "Your turn";
+    }
+
+    function checkWinner(player) {
+      const winPatterns = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+      ];
+      return winPatterns.some(pattern => 
+        pattern.every(index => cells[index] === player)
+      );
+    }
+
+    function resetGame() {
+      cells = Array(9).fill(null);
+      currentPlayer = "X";
+      gameOver = false;
+      message.textContent = "X's turn";
+      createBoard();
+    }
+
+    // Initial setup
+    modeSelect.addEventListener("change", resetGame);
+    resetGame();
+  </script>
+
+</body>
+</html>
